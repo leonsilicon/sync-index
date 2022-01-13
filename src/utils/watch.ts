@@ -25,4 +25,6 @@ export async function createSyncIndexWatcher(options: SyncIndexOptions) {
 					break;
 			}
 		});
+
+	console.info('Watching files for changes...\n');
 }
