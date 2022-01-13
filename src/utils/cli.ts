@@ -24,7 +24,7 @@ export async function syncIndexCli() {
 	program.parse();
 
 	const configOptions = await getConfigOptions();
-	 
+
 	const options: SyncIndexOptions = {
 		...configOptions,
 		...program.opts<SyncIndexOptions>(),
