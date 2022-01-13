@@ -1,3 +1,3 @@
 module.exports = {
-	folders: ['src'],
+	folders: ['src/*'],
 };
