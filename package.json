@@ -8,6 +8,9 @@
 	"lionp": {
 		"tests": false
 	},
+	"bin": {
+		"sync-index": "sync-index.js"
+	},
 	"commitlint": {
 		"extends": [
 			"@leonzalion/configs/commitlint"
