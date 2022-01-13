@@ -1,5 +1,6 @@
 import { globby } from 'globby';
 import type { SyncIndexOptions } from '~/types/options';
+import { debug } from '~/utils/index.js';
 
 export async function getMatchedFolders(options: SyncIndexOptions) {
 	const folders = await Promise.all([
@@ -12,6 +13,8 @@ export async function getMatchedFolders(options: SyncIndexOptions) {
 			expandDirectories: true,
 		}),
 	]);
+
+	debug(`matched folders: ${JSON.stringify(folders)}`);
 
 	return folders.flat();
 }
