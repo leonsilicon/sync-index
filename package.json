@@ -5,6 +5,9 @@
 	"type": "module",
 	"license": "MIT",
 	"prettier": "@leonzalion/configs/prettier",
+	"lionp": {
+		"tests": false
+	},
 	"commitlint": {
 		"extends": [
 			"@leonzalion/configs/commitlint"
@@ -14,7 +17,6 @@
 		"release": "lionp",
 		"prepare": "simple-git-hooks",
 		"start": "node --loader ts-node/esm ./src/sync-index.ts",
-		"test": "NODE_OPTIONS=--experimental-vm-modules jest",
 		"lint": "eslint --cache --fix .",
 		"prettier": "prettier --write src",
 		"tc": "tsc --noEmit"
