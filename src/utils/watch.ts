@@ -1,3 +1,4 @@
+import process from 'node:process';
 import chokidar from 'chokidar';
 import { getMatchedFolders } from './folders.js';
 import { syncIndex } from './sync.js';
@@ -27,4 +28,7 @@ export async function createSyncIndexWatcher(options: SyncIndexOptions) {
 		});
 
 	console.info('Watching files for changes...\n');
+
+	// Prevents Node.js from exiting
+	process.stdin.resume();
 }
