@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { program } from 'commander';
 import { createSyncIndexWatcher } from './watch.js';
 import { syncIndexFolders } from './sync.js';
@@ -10,24 +11,30 @@ export async function syncIndexCli() {
 		.description('Sync your index.ts files')
 		.name('sync-index')
 		.showHelpAfterError()
-		.argument('-f, --folders', 'The folders to sync (as globs)')
+		.option('-f, --folders', 'the folders to sync (as globs)')
 		.option(
 			'-w, --watch',
-			'Set up a sync-index watcher to auto-create and auto-update index.ts files'
+			'set up a sync-index watcher to auto-create and auto-update index.ts files'
 		)
 		.option(
 			'-s, --skip-initial',
-			"Don't automatically run once when the watcher is started"
+			"don't automatically run once when the watcher is started"
 		);
 
 	program.parse();
 
-	const configOptions = getConfigOptions();
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const configOptions = await getConfigOptions();
+	 
 	const options: SyncIndexOptions = {
 		...configOptions,
 		...program.opts<SyncIndexOptions>(),
 	};
+
+	if (!options.folders) {
+		console.error('No folders were specified.\n');
+		console.info(program.helpInformation());
+		process.exit(1);
+	}
 
 	if (options.watch) {
 		await createSyncIndexWatcher(options);

@@ -17,7 +17,13 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 	files.sort((f1, f2) => (f1 === f2 ? 0 : f1 < f2 ? -1 : 1));
 	const exports = files
 		.filter((file) => file !== 'index.ts')
-		.map((file) => `export * from './${path.parse(file).name}';`)
+		.map((file) => {
+			const entryName = path.parse(file).name;
+			const filePath = path.join(folder, file);
+			return fs.statSync(filePath).isDirectory()
+				? `export * from './${entryName}/index.js';`
+				: `export * from './${entryName}.js';`;
+		})
 		.join('\n');
 	await fs.promises.writeFile(indexTs, exports + '\n');
 }
