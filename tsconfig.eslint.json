@@ -1,0 +1,9 @@
+{
+	"include": [
+		"src",
+		"scripts",
+		"jest.config.mjs",
+		".markdownlint.js",
+		".eslintrc.cjs"
+	]
+}
