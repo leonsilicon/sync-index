@@ -14,11 +14,12 @@ Create a sync-index.config.cjs file in the root of your project and then add the
 
 ```typescript
 module.exports = {
-  folders: ['src/utils', 'src/types'] // glob patterns are also supported
-}
+	folders: ['src/utils', 'src/types'], // glob patterns are also supported
+};
 ```
 
 Then, you can run `sync-index` to automatically sync the `index.ts` files for the above folders:
+
 ```zsh
 pnpm exec sync-index
 ```
@@ -31,7 +32,6 @@ You can also use `sync-index -w` to start a watcher that will automatically upda
 import { syncIndex } from 'sync-index';
 
 await syncIndex({
-  folders: ['src/utils', 'src/types']
+	folders: ['src/utils', 'src/types'],
 });
 ```
-
