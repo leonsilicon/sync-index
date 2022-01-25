@@ -16,5 +16,7 @@
 	"include": [
 		"./"
 	],
-	"exclude": ["fixtures"]
+	"exclude": [
+		"fixtures"
+	]
 }

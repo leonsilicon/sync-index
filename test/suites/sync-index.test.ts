@@ -1,8 +1,9 @@
 import * as fs from 'node:fs';
+import process from 'node:process';
 import * as path from 'node:path';
+import { outdent } from 'outdent';
 import { defaultConfig } from '~/utils/config.js';
 import { syncIndex } from '~/utils/sync.js';
-import { outdent } from 'outdent';
 
 const mkdirpTemp = (tempFolder: string) => {
 	const folderPath = path.join('temp', tempFolder);
