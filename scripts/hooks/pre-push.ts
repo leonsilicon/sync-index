@@ -4,5 +4,5 @@ import { execaCommandSync as exec } from 'execa';
 try {
 	exec('pnpm run tc', { stdio: 'inherit' });
 } catch {
-	process.exit(-1);
+	process.exit(1);
 }
