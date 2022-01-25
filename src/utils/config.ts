@@ -7,7 +7,7 @@ export const defaultConfig: SyncIndexOptions = {
 	watch: false,
 	skipInitial: false,
 	verbose: false,
-	exportExtensions: false,
+	exportExtensions: true,
 	indexExtension: '.ts',
 };
 
