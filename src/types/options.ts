@@ -5,4 +5,6 @@ export type SyncIndexOptions = {
 	verbose: boolean;
 	exportExtensions: boolean;
 	indexExtension: string;
+	syncedFileExtensions: string[];
+	cwd: string;
 };

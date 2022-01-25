@@ -6,24 +6,47 @@ import type { SyncIndexOptions } from '~/types/options.js';
 
 export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 	debug(`syncIndex() called with ${entryPath}`);
+
 	const folder = entryPath.endsWith('.ts')
 		? path.dirname(entryPath)
 		: entryPath;
-	const normalizedIndexExtension = options.indexExtension.startsWith('.')
-		? options.indexExtension.slice(1)
-		: options.indexExtension;
-	const indexTs = path.join(folder, `index.${normalizedIndexExtension}`);
-
-	debug(`index file path to sync: ${indexTs}`);
-
-	if (!fs.existsSync(indexTs)) {
-		debug(`creating ${indexTs}`);
-		await fs.promises.writeFile(indexTs, '');
-	}
 
 	debug(`reading ${folder}`);
 	const files = await fs.promises.readdir(folder);
 	files.sort((f1, f2) => (f1 === f2 ? 0 : f1 < f2 ? -1 : 1));
+
+	let indexExtension;
+	if (options.indexExtension === 'auto') {
+		const extensionCount: Record<string, number> = {};
+		let mostCommonExtension: { ext: string; count: number } = {
+			ext: '.js',
+			count: 0,
+		};
+		for (const file of files) {
+			const fileExt = path.parse(file).ext;
+			extensionCount[fileExt] = (extensionCount[fileExt] ?? 0) + 1;
+			if (extensionCount[fileExt]! > mostCommonExtension.count) {
+				mostCommonExtension = { count: extensionCount[fileExt]!, ext: fileExt };
+			}
+		}
+
+		debug(`most common extension: ${mostCommonExtension.ext}`);
+		indexExtension = mostCommonExtension.ext.slice(1);
+	} else {
+		const normalizedIndexExtension = options.indexExtension.startsWith('.')
+			? options.indexExtension.slice(1)
+			: options.indexExtension;
+		indexExtension = normalizedIndexExtension;
+	}
+
+	const indexFile = path.join(folder, `index.${indexExtension}`);
+
+	debug(`index file path to sync: ${indexFile}`);
+
+	if (!fs.existsSync(indexFile)) {
+		debug(`creating ${indexFile}`);
+		await fs.promises.writeFile(indexFile, '');
+	}
 
 	debug(`sorted file exports: ${JSON.stringify(files)}`);
 
@@ -51,7 +74,7 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 
 	debug(`exports string: ${exports}`);
 
-	await fs.promises.writeFile(indexTs, exports + '\n');
+	await fs.promises.writeFile(indexFile, exports + '\n');
 }
 
 export async function syncIndexFolders(options: SyncIndexOptions) {

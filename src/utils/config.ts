@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { packageDirectory } from 'pkg-dir';
 import { cosmiconfig } from 'cosmiconfig';
 import type { SyncIndexOptions } from '~/types/options.js';
@@ -8,7 +9,9 @@ export const defaultConfig: SyncIndexOptions = {
 	skipInitial: false,
 	verbose: false,
 	exportExtensions: true,
-	indexExtension: '.ts',
+	indexExtension: 'auto',
+	syncedFileExtensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+	cwd: process.cwd(),
 };
 
 export async function getConfigOptions(): Promise<SyncIndexOptions> {
