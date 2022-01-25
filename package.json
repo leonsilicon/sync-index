@@ -5,9 +5,6 @@
 	"type": "module",
 	"license": "MIT",
 	"prettier": "@leonzalion/configs/prettier",
-	"lionp": {
-		"tests": false
-	},
 	"bin": {
 		"sync-index": "sync-index.js"
 	},
@@ -20,14 +17,15 @@
 		"release": "lionp",
 		"build": "node-ts ./scripts/build.ts",
 		"prepare": "simple-git-hooks",
-		"start": "node-tsn ./src/sync-index.ts",
+		"start": "node-ts ./src/sync-index.ts",
+		"test": "NODE_OPTIONS=--experimental-vm-modules jest",
 		"lint": "eslint --cache --fix .",
 		"prettier": "prettier --write src",
 		"tc": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^15.0.0",
-		"@leonzalion/configs": "latest",
+		"@leonzalion/configs": "^1.0.40",
 		"@types/debug": "^4.1.7",
 		"@types/jest": "^27.4.0",
 		"@types/node": "^17.0.8",
@@ -36,10 +34,12 @@
 		"jest": "^27.4.7",
 		"lint-staged": "^12.1.7",
 		"lionp": "^1.0.9",
+		"outdent": "^0.8.0",
 		"prettier": "^2.5.1",
 		"rimraf": "^3.0.2",
 		"simple-git-hooks": "^2.7.0",
 		"ts-jest": "^27.1.2",
+		"ts-jest-resolver": "^2.0.0",
 		"ts-node": "^10.4.0",
 		"tsc-alias": "^1.5.0",
 		"tsconfig-paths": "^3.12.0",

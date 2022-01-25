@@ -9,8 +9,12 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 	const folder = entryPath.endsWith('.ts')
 		? path.dirname(entryPath)
 		: entryPath;
-	const indexTs = path.join(folder, 'index.ts');
-	debug(`index.ts path to sync: ${indexTs}`);
+	const normalizedIndexExtension = options.indexExtension.startsWith('.')
+		? options.indexExtension.slice(1)
+		: options.indexExtension;
+	const indexTs = path.join(folder, `index.${normalizedIndexExtension}`);
+
+	debug(`index file path to sync: ${indexTs}`);
 
 	if (!fs.existsSync(indexTs)) {
 		debug(`creating ${indexTs}`);
@@ -24,13 +28,24 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 	debug(`sorted file exports: ${JSON.stringify(files)}`);
 
 	const exports = files
-		.filter((file) => file !== 'index.ts')
+		.filter((file) => file !== 'index.ts' && file !== 'index.js')
 		.map((file) => {
 			const entryName = path.parse(file).name;
 			const filePath = path.join(folder, file);
-			return fs.statSync(filePath).isDirectory()
-				? `export * from './${entryName}/index.js';`
-				: `export * from './${entryName}.js';`;
+			const isDir = fs.statSync(filePath).isDirectory();
+			if (isDir) {
+				return options.exportExtensions
+					? `export * from './${entryName}/index.js';`
+					: `export * from './${entryName}';`;
+			} else {
+				if (options.exportExtensions) {
+					const { ext: origExt } = path.parse(file);
+					const ext = origExt === '.ts' ? '.js' : origExt;
+					return `export * from './${entryName}${ext}';`;
+				} else {
+					return `export * from './${entryName}';`;
+				}
+			}
 		})
 		.join('\n');
 

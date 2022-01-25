@@ -3,4 +3,6 @@ export type SyncIndexOptions = {
 	watch: boolean;
 	skipInitial: boolean;
 	verbose: boolean;
+	exportExtensions: boolean;
+	indexExtension: string;
 };

@@ -121,3 +121,6 @@ dist-ssr
 # Cache files
 .eslintcache
 tsconfig.tsbuildinfo
+
+# Test files
+temp
