@@ -23,7 +23,13 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 			count: 0,
 		};
 		for (const file of files) {
+			const filePath = path.join(folder, file);
+			const isDir = fs.statSync(filePath).isDirectory();
+			if (isDir) continue;
+
 			const fileExt = path.parse(file).ext;
+			if (!options.fileExtensionsToSync.includes(fileExt)) continue;
+
 			extensionCount[fileExt] = (extensionCount[fileExt] ?? 0) + 1;
 			if (extensionCount[fileExt]! > mostCommonExtension.count) {
 				mostCommonExtension = { count: extensionCount[fileExt]!, ext: fileExt };
