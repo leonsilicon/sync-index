@@ -10,7 +10,7 @@ export const defaultConfig: SyncIndexOptions = {
 	verbose: false,
 	exportExtensions: true,
 	indexExtension: 'auto',
-	syncedFileExtensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+	fileExtensionsToSync: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
 	cwd: process.cwd(),
 };
 

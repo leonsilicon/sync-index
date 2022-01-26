@@ -52,6 +52,12 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 
 	const exports = files
 		.filter((file) => file !== 'index.ts' && file !== 'index.js')
+		.filter((file) => {
+			const filePath = path.join(folder, file);
+			const fileExt = path.parse(file).ext;
+			const isDir = fs.statSync(filePath).isDirectory();
+			return isDir || options.fileExtensionsToSync.includes(fileExt);
+		})
 		.map((file) => {
 			const entryName = path.parse(file).name;
 			const filePath = path.join(folder, file);
