@@ -56,7 +56,7 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 
 	debug(`sorted file exports: ${JSON.stringify(files)}`);
 
-	const exports = files
+	const exportsArray = files
 		.filter((file) => file !== 'index.ts' && file !== 'index.js')
 		.filter((file) => {
 			const filePath = path.join(folder, file);
@@ -81,9 +81,12 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 					return `export * from './${entryName}';`;
 				}
 			}
-		})
-		.join('\n');
+		});
 
+	debug(`exports array: ${JSON.stringify(exportsArray)}`);
+	if (exportsArray.length === 0) return;
+
+	const exports = exportsArray.join('\n');
 	debug(`exports string: ${exports}`);
 
 	await fs.promises.writeFile(indexFile, exports + '\n');
