@@ -49,11 +49,6 @@ export async function syncIndex(options: SyncIndexOptions, entryPath: string) {
 
 	debug(`index file path to sync: ${indexFile}`);
 
-	if (!fs.existsSync(indexFile)) {
-		debug(`creating ${indexFile}`);
-		await fs.promises.writeFile(indexFile, '');
-	}
-
 	debug(`sorted file exports: ${JSON.stringify(files)}`);
 
 	const exportsArray = files
