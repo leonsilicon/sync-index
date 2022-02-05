@@ -1,9 +1,9 @@
 import process from 'node:process';
 import { packageDirectory } from 'pkg-dir';
 import { cosmiconfig } from 'cosmiconfig';
-import type { SyncIndexOptions } from '~/types/options.js';
+import type { SyncIndexConfig, SyncIndexOptions } from '~/types/options.js';
 
-export const defaultConfig: SyncIndexOptions = {
+export const defaultConfigOptions: SyncIndexOptions = {
 	folders: [],
 	watch: false,
 	skipInitial: false,
@@ -14,14 +14,26 @@ export const defaultConfig: SyncIndexOptions = {
 	cwd: process.cwd(),
 };
 
-export async function getConfigOptions(): Promise<SyncIndexOptions> {
+export async function getConfig(): Promise<SyncIndexConfig> {
 	const searchDir = await packageDirectory();
 	const explorer = cosmiconfig('sync-index', {
 		stopDir: searchDir,
 	});
 
 	const results = await explorer.search(searchDir);
-	const config = results?.config as SyncIndexOptions;
+	let config = results?.config as SyncIndexConfig;
 
-	return { ...defaultConfig, ...config };
+	if (Array.isArray(config)) {
+		config = config.map((conf) => ({
+			...defaultConfigOptions,
+			...conf,
+		}));
+	} else {
+		config = {
+			...defaultConfigOptions,
+			...config,
+		};
+	}
+
+	return config;
 }

@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import process from 'node:process';
 import * as path from 'node:path';
 import { outdent } from 'outdent';
-import { defaultConfig } from '~/utils/config.js';
+import { defaultConfigOptions } from '~/utils/config.js';
 import { syncIndexFolders } from '~/utils/sync.js';
 
 const mkdirpTemp = (tempFolder: string) => {
@@ -22,7 +22,7 @@ describe('syncs index properly', () => {
 		const folder = mkdirpTemp('extensions');
 
 		await syncIndexFolders({
-			...defaultConfig,
+			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: '.js',
 			folders: ['.', 'folder'],
@@ -57,7 +57,7 @@ describe('syncs index properly', () => {
 		const folder = mkdirpTemp('without-extensions');
 
 		await syncIndexFolders({
-			...defaultConfig,
+			...defaultConfigOptions,
 			exportExtensions: false,
 			indexExtension: '.js',
 			folders: ['.', 'folder'],
@@ -78,7 +78,7 @@ describe('syncs index properly', () => {
 		const folder = mkdirpTemp('index-extension');
 
 		await syncIndexFolders({
-			...defaultConfig,
+			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: '.ts',
 			folders: ['.', 'folder'],
@@ -99,7 +99,7 @@ describe('syncs index properly', () => {
 		const folder = mkdirpTemp('auto-mode');
 
 		await syncIndexFolders({
-			...defaultConfig,
+			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: 'auto',
 			folders: ['.', 'folder'],
