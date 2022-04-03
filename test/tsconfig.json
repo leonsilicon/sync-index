@@ -5,19 +5,10 @@
 		"baseUrl": ".",
 		"outDir": "dist",
 		"paths": {
-			"~/*": [
-				"../src/*",
-			],
-			"~test/*": [
-				"./*"
-			]
+			"~/*": ["../src/*"],
+			"~test/*": ["./*"]
 		}
 	},
-	"include": [
-		"./"
-	],
-	"exclude": [
-		"fixtures",
-		"temp"
-	]
+	"include": ["./"],
+	"exclude": ["fixtures", "temp"]
 }

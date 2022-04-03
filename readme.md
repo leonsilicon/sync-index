@@ -43,13 +43,13 @@ You can also use `sync-index -w` to start a watcher that will automatically upda
 **indexExtension (boolean):** The extension of the index file.
 
 export const defaultConfig: SyncIndexOptions = {
-	folders: [],
-	watch: false,
-	skipInitial: false,
-	verbose: false,
-	exportExtensions: true,
-	indexExtension: '.ts',
-	syncedFileExtensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+folders: [],
+watch: false,
+skipInitial: false,
+verbose: false,
+exportExtensions: true,
+indexExtension: '.ts',
+syncedFileExtensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
 };
 
 ### Programmatic Usage
