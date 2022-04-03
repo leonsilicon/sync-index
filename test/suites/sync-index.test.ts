@@ -4,6 +4,7 @@ import * as path from 'node:path';
 import { outdent } from 'outdent';
 import { defaultConfigOptions } from '~/utils/config.js';
 import { syncIndexFolders } from '~/utils/sync.js';
+import { test, describe, beforeAll, expect } from 'vitest';
 
 const mkdirpTemp = (tempFolder: string) => {
 	const folderPath = path.join('temp', tempFolder);
