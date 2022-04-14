@@ -2,9 +2,9 @@ import * as fs from 'node:fs';
 import process from 'node:process';
 import * as path from 'node:path';
 import { outdent } from 'outdent';
+import { test, describe, beforeAll, expect } from 'vitest';
 import { defaultConfigOptions } from '~/utils/config.js';
 import { syncIndexFolders } from '~/utils/sync.js';
-import { test, describe, beforeAll, expect } from 'vitest';
 
 const mkdirpTemp = (tempFolder: string) => {
 	const folderPath = path.join('temp', tempFolder);
