@@ -3,8 +3,8 @@
 	"include": [
 		"src",
 		"scripts",
-		".markdownlint.js",
 		".eslintrc.cjs",
-		"sync-index.config.cjs"
+		"sync-index.config.cjs",
+		"vitest.config.ts"
 	]
 }
