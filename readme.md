@@ -1,4 +1,4 @@
-# SyncIndex
+# sync-index
 
 [![npm version](https://badge.fury.io/js/sync-index.svg)](https://badge.fury.io/js/sync-index)
 
