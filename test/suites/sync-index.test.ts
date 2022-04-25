@@ -1,37 +1,30 @@
 import * as fs from 'node:fs';
-import process from 'node:process';
 import * as path from 'node:path';
 import { outdent } from 'outdent';
-import { test, describe, beforeAll, expect } from 'vitest';
+import { test, describe, expect } from 'vitest';
+import lionFixture from 'lion-fixture';
 import { defaultConfigOptions } from '~/utils/config.js';
 import { syncIndexFolders } from '~/utils/sync.js';
 
-const mkdirpTemp = (tempFolder: string) => {
-	const folderPath = path.join('temp', tempFolder);
-	fs.mkdirSync(folderPath, { recursive: true });
-	fs.cpSync('fixtures/my-project', folderPath, { recursive: true });
-	return folderPath;
-};
+const { fixture } = lionFixture(import.meta.url);
 
-describe('syncs index properly', () => {
-	beforeAll(() => {
-		process.chdir('test');
-		fs.rmSync('temp', { recursive: true, force: true });
-	});
-
+describe('syncs index properly', async () => {
 	test('syncs with extensions', async () => {
-		const folder = mkdirpTemp('extensions');
+		const extensionsTempDir = await fixture('my-project', 'extensions');
 
 		await syncIndexFolders({
 			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: '.js',
 			folders: ['.', 'folder'],
-			cwd: folder,
+			cwd: extensionsTempDir,
 			verbose: true,
 		});
 
-		const indexJs = fs.readFileSync(path.join(folder, 'index.js')).toString();
+		const indexJs = fs.readFileSync(
+			path.join(extensionsTempDir, 'index.js'),
+			'utf8'
+		);
 
 		expect(indexJs).toBe(
 			outdent({ trimTrailingNewline: false })`
@@ -42,7 +35,7 @@ describe('syncs index properly', () => {
 		);
 
 		const folderIndexJs = fs
-			.readFileSync(path.join(folder, 'folder/index.js'))
+			.readFileSync(path.join(extensionsTempDir, 'folder/index.js'))
 			.toString();
 
 		expect(folderIndexJs).toBe(
@@ -55,17 +48,20 @@ describe('syncs index properly', () => {
 	});
 
 	test('syncs without extensions', async () => {
-		const folder = mkdirpTemp('without-extensions');
+		const withoutExtensionsTempDir = await fixture('my-project', 'without-extensions');
 
 		await syncIndexFolders({
 			...defaultConfigOptions,
 			exportExtensions: false,
 			indexExtension: '.js',
 			folders: ['.', 'folder'],
-			cwd: folder,
+			cwd: withoutExtensionsTempDir,
 		});
 
-		const indexJs = fs.readFileSync(path.join(folder, 'index.js')).toString();
+		const indexJs = fs.readFileSync(
+			path.join(withoutExtensionsTempDir, 'index.js'),
+			'utf8'
+		);
 		expect(indexJs).toBe(
 			outdent({ trimTrailingNewline: false })`
 				export * from './file';
@@ -76,17 +72,20 @@ describe('syncs index properly', () => {
 	});
 
 	test('respects the indexExtension property', async () => {
-		const folder = mkdirpTemp('index-extension');
+		const indexExtensionTempDir = await fixture('my-project', 'index-extension');
 
 		await syncIndexFolders({
 			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: '.ts',
 			folders: ['.', 'folder'],
-			cwd: folder,
+			cwd: indexExtensionTempDir,
 		});
 
-		const indexTs = fs.readFileSync(path.join(folder, 'index.ts')).toString();
+		const indexTs = fs.readFileSync(
+			path.join(indexExtensionTempDir, 'index.ts'),
+			'utf8'
+		);
 		expect(indexTs).toBe(
 			outdent({ trimTrailingNewline: false })`
 				export * from './file.js';
@@ -97,18 +96,18 @@ describe('syncs index properly', () => {
 	});
 
 	test('auto mode works', async () => {
-		const folder = mkdirpTemp('auto-mode');
+		const autoModeTempDir = await fixture('my-project', 'auto-mode');
 
 		await syncIndexFolders({
 			...defaultConfigOptions,
 			exportExtensions: true,
 			indexExtension: 'auto',
 			folders: ['.', 'folder'],
-			cwd: folder,
+			cwd: autoModeTempDir,
 		});
 
 		const folderIndexTs = fs
-			.readFileSync(path.join(folder, 'folder/index.ts'))
+			.readFileSync(path.join(autoModeTempDir, 'folder/index.ts'))
 			.toString();
 
 		expect(folderIndexTs).toBe(
