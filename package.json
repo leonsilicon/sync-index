@@ -1,5 +1,6 @@
 {
 	"name": "sync-index",
+	"description": "Automatically sync `index.js` files that export all sibling files.",
 	"version": "1.0.13",
 	"type": "module",
 	"license": "MIT",
